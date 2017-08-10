@@ -4,7 +4,7 @@ namespace TaskPlannerBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+// use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -13,8 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="TaskPlannerBundle\Repository\UserRepository")
  */
 
-class User extends BaseUser
-
+class User extends \FOS\UserBundle\Model\User
 {
 
   public function __construct()
@@ -107,10 +106,10 @@ class User extends BaseUser
     /**
     * Add tasks
     *
-    * @param \AppBundle\Entity\Task $tasks
+    * @param \TaskPlannerBundle\Entity\Task $tasks
     * @return User
     */
-    public function addTask(\AppBundle\Entity\Task $tasks)
+    public function addTask(\TaskPlannerBundle\Entity\Task $tasks)
     {
       $this -> tasks[] = $tasks;
       return $this;
@@ -119,9 +118,9 @@ class User extends BaseUser
     /**
     * Remove tasks
     *
-    * @param \AppBundle\Entity\Task $tasks
+    * @param \TaskPlannerBundle\Entity\Task $tasks
     */
-    public function removeTask(\AppBundle\Entity\Task $tasks)
+    public function removeTask(\TaskPlannerBundle\Entity\Task $tasks)
     {
       $this->tasks->removeElement($tasks);
     }
@@ -129,10 +128,10 @@ class User extends BaseUser
     /**
     * Add categories
     *
-    * @param \AppBundle\Entity\Category $categories
+    * @param \TaskPlannerBundle\Entity\Category $categories
     * @return User
     */
-    public function addCategory(\AppBundle\Entity\Category $categories)
+    public function addCategory(\TaskPlannerBundle\Entity\Category $categories)
     {
       $this -> categories[] = $categories;
       return $this;
@@ -141,9 +140,9 @@ class User extends BaseUser
     /**
     * Remove categories
     *
-    * @param \AppBundle\Entity\Category $categories
+    * @param \TaskPlannerBundle\Entity\Category $categories
     */
-    public function removeCategory(\AppBundle\Entity\Category $categories)
+    public function removeCategory(\TaskPlannerBundle\Entity\Category $categories)
     {
        $this -> categories -> removeElement($categories);
      }
