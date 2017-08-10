@@ -2,9 +2,8 @@
 
 namespace TaskPlannerBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-// use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -12,17 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="fos_user")
  * @ORM\Entity(repositoryClass="TaskPlannerBundle\Repository\UserRepository")
  */
-
 class User extends \FOS\UserBundle\Model\User
 {
-
-  public function __construct()
-  {
-    parent::__construct();
-    $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
-    $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
-  }
-
     /**
      * @var int
      *
@@ -30,22 +20,19 @@ class User extends \FOS\UserBundle\Model\User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="categories", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="user")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $categories;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="tasks", type="string", length=255)
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
+     * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
      */
     private $tasks;
-
 
     /**
      * Get id
@@ -58,22 +45,41 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Set categories
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add categories
      *
-     * @param string $categories
+     * @param \TaskPlannerBundle\Entity\Category $categories
      * @return User
      */
-    public function setCategories($categories)
+     public function addCategory(\TaskPlannerBundle\Entity\Category $categories)
     {
-        $this->categories = $categories;
-
+        $this->categories[] = $categories;
         return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \TaskPlannerBundle\Entity\Category $categories
+     */
+    public function removeCategory(\TaskPlannerBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
     }
 
     /**
      * Get categories
      *
-     * @return string
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCategories()
     {
@@ -81,69 +87,34 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Set tasks
+     * Add tasks
      *
-     * @param string $tasks
+     * @param \TaskPlannerBundle\Entity\Task $tasks
      * @return User
      */
-    public function setTasks($tasks)
+    public function addTask(\TaskPlannerBundle\Entity\Task $tasks)
     {
-        $this->tasks = $tasks;
-
+        $this->tasks[] = $tasks;
         return $this;
+    }
+
+    /**
+     * Remove tasks
+     *
+     * @param \TaskPlannerBundle\Entity\Task $tasks
+     */
+    public function removeTask(\TaskPlannerBundle\Entity\Task $tasks)
+    {
+        $this->tasks->removeElement($tasks);
     }
 
     /**
      * Get tasks
      *
-     * @return string
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTasks()
     {
-      return $this->tasks;
+        return $this->tasks;
     }
-
-    /**
-    * Add tasks
-    *
-    * @param \TaskPlannerBundle\Entity\Task $tasks
-    * @return User
-    */
-    public function addTask(\TaskPlannerBundle\Entity\Task $tasks)
-    {
-      $this -> tasks[] = $tasks;
-      return $this;
-    }
-
-    /**
-    * Remove tasks
-    *
-    * @param \TaskPlannerBundle\Entity\Task $tasks
-    */
-    public function removeTask(\TaskPlannerBundle\Entity\Task $tasks)
-    {
-      $this->tasks->removeElement($tasks);
-    }
-
-    /**
-    * Add categories
-    *
-    * @param \TaskPlannerBundle\Entity\Category $categories
-    * @return User
-    */
-    public function addCategory(\TaskPlannerBundle\Entity\Category $categories)
-    {
-      $this -> categories[] = $categories;
-      return $this;
-    }
-
-    /**
-    * Remove categories
-    *
-    * @param \TaskPlannerBundle\Entity\Category $categories
-    */
-    public function removeCategory(\TaskPlannerBundle\Entity\Category $categories)
-    {
-       $this -> categories -> removeElement($categories);
-     }
 }
