@@ -14,4 +14,14 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
         ));
     }
+
+    /**
+    * @Route("/", name="userpage")
+    */
+    public function indexAction(Request $request)
+    {
+        return $this->render('default/index2.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..'),
+        ));
+    }
 }

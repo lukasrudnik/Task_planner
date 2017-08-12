@@ -23,14 +23,24 @@ class Builder implements ContainerAwareInterface
 
         foreach ($categories as $category) {
 
-          $menu->addChild('Latest Blog Post', array(
+          $menu->addChild('Latest Add Category', array(
               'route' => 'category_show',
               'routeParameters' => array('id' => $category->getId())
           ));
         }
 
+        // $comments = $em->getRepository('TaskPlannerBundle:Comments')->findAll();
+        //
+        // foreach ($comments as $comment) {
+        //
+        //   $menu->addChild('Latest Add Comments', array(
+        //       'route' => 'comment_show',
+        //       'routeParameters' => array('id' => $comment->getId())
+        //   ));
+        // }
+
         // // create another menu item
-        $menu->addChild('About Me', array('route' => 'homepage'));
+        $menu->addChild('About Me', array('route' => ''));
         // // you can also add sub level's to your menu's as follows
         // $menu['About Me']->addChild('Edit profile', array('route' => 'edit_profile'));
 
