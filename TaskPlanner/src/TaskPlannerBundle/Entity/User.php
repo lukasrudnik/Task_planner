@@ -1,10 +1,8 @@
 <?php
-
 namespace TaskPlannerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
 /**
  * User
  *
@@ -21,19 +19,14 @@ class User extends \FOS\UserBundle\Model\User
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
      * @ORM\OneToMany(targetEntity="Category", mappedBy="user")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $categories;
-
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="user")
-     * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
      */
     private $tasks;
-
     /**
      * Get id
      *
@@ -43,7 +36,6 @@ class User extends \FOS\UserBundle\Model\User
     {
         return $this->id;
     }
-
     /**
      * Constructor
      */
@@ -53,19 +45,17 @@ class User extends \FOS\UserBundle\Model\User
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
     /**
      * Add categories
      *
      * @param \TaskPlannerBundle\Entity\Category $categories
      * @return User
      */
-     public function addCategory(\TaskPlannerBundle\Entity\Category $categories)
+    public function addCategory(\TaskPlannerBundle\Entity\Category $categories)
     {
         $this->categories[] = $categories;
         return $this;
     }
-
     /**
      * Remove categories
      *
@@ -75,7 +65,6 @@ class User extends \FOS\UserBundle\Model\User
     {
         $this->categories->removeElement($categories);
     }
-
     /**
      * Get categories
      *
@@ -85,7 +74,6 @@ class User extends \FOS\UserBundle\Model\User
     {
         return $this->categories;
     }
-
     /**
      * Add tasks
      *
@@ -97,7 +85,6 @@ class User extends \FOS\UserBundle\Model\User
         $this->tasks[] = $tasks;
         return $this;
     }
-
     /**
      * Remove tasks
      *
@@ -107,7 +94,6 @@ class User extends \FOS\UserBundle\Model\User
     {
         $this->tasks->removeElement($tasks);
     }
-
     /**
      * Get tasks
      *

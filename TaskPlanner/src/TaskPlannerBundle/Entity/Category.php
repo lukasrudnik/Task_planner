@@ -1,8 +1,8 @@
 <?php
-
 namespace TaskPlannerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
@@ -24,29 +24,27 @@ class Category
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=100)
+     * @Assert\Length(max="100", maxMessage="The name is too long!")
      */
     private $name;
 
     /**
-     * @var string
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="category")
      *
-     * @ORM\Column(name="tasks", type="string", length=255)
      */
     private $tasks;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="user", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="category")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
-
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,14 +60,13 @@ class Category
     public function setName($name)
     {
         $this->name = $name;
-
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -77,22 +74,39 @@ class Category
     }
 
     /**
-     * Set tasks
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add tasks
      *
-     * @param string $tasks
+     * @param \TaskPlannerBundle\Entity\Task $tasks
      * @return Category
      */
-    public function setTasks($tasks)
+    public function addTask(\TaskPlannerBundle\Entity\Task $tasks)
     {
-        $this->tasks = $tasks;
-
+        $this->tasks[] = $tasks;
         return $this;
+    }
+
+    /**
+     * Remove tasks
+     *
+     * @param \TaskPlannerBundle\Entity\Task $tasks
+     */
+    public function removeTask(\TaskPlannerBundle\Entity\Task $tasks)
+    {
+        $this->tasks->removeElement($tasks);
     }
 
     /**
      * Get tasks
      *
-     * @return string 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTasks()
     {
@@ -102,23 +116,26 @@ class Category
     /**
      * Set user
      *
-     * @param string $user
+     * @param \TaskPlannerBundle\Entity\User $user
      * @return Category
      */
-    public function setUser($user)
+    public function setUser(\TaskPlannerBundle\Entity\User $user = null)
     {
         $this->user = $user;
-
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return string 
+     * @return \TaskPlannerBundle\Entity\User
      */
     public function getUser()
     {
         return $this->user;
+    }
+    public function __toString()
+    {
+        return $this->name;
     }
 }

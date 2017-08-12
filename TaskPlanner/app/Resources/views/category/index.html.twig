@@ -18,8 +18,7 @@
             <tr>
                 <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
                 <td>{{ category.name }}</td>
-                <td>{{ category.tasks }}</td>
-                <td>{{ category.user }}</td>
+                <td>{{ category.user.username }}</td>
                 <td>
                     <ul>
                         <li>

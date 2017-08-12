@@ -1,23 +1,20 @@
 <?php
-
 namespace TaskPlannerBundle\Controller;
-
-use TaskPlannerBundle\Entity\Comments;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
-//use TaskPlannerBundle\Entity\Comments;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use TaskPlannerBundle\Entity\Comments;
 use TaskPlannerBundle\Form\CommentsType;
-
 /**
- * Comment controller.
+ * Comments controller.
  *
- * @Route("comments")
+ * @Route("/comments")
  */
 class CommentsController extends Controller
 {
     /**
-     * Lists all comment entities.
+     * Lists all Comments entities.
      *
      * @Route("/", name="comments_index")
      * @Method("GET")
@@ -25,42 +22,35 @@ class CommentsController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $comments = $em->getRepository('TaskPlannerBundle:Comments')->findAll();
-
         return $this->render('comments/index.html.twig', array(
             'comments' => $comments,
         ));
     }
-
     /**
-     * Creates a new comment entity.
+     * Creates a new Comments entity.
      *
      * @Route("/new", name="comments_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
-        $comment = new Comment();
+        $comment = new Comments();
         $form = $this->createForm('TaskPlannerBundle\Form\CommentsType', $comment);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
-
             return $this->redirectToRoute('comments_show', array('id' => $comment->getId()));
         }
-
         return $this->render('comments/new.html.twig', array(
             'comment' => $comment,
             'form' => $form->createView(),
         ));
     }
-
     /**
-     * Finds and displays a comment entity.
+     * Finds and displays a Comments entity.
      *
      * @Route("/{id}", name="comments_show")
      * @Method("GET")
@@ -68,15 +58,13 @@ class CommentsController extends Controller
     public function showAction(Comments $comment)
     {
         $deleteForm = $this->createDeleteForm($comment);
-
         return $this->render('comments/show.html.twig', array(
             'comment' => $comment,
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
     /**
-     * Displays a form to edit an existing comment entity.
+     * Displays a form to edit an existing Comments entity.
      *
      * @Route("/{id}/edit", name="comments_edit")
      * @Method({"GET", "POST"})
@@ -86,22 +74,20 @@ class CommentsController extends Controller
         $deleteForm = $this->createDeleteForm($comment);
         $editForm = $this->createForm('TaskPlannerBundle\Form\CommentsType', $comment);
         $editForm->handleRequest($request);
-
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
             return $this->redirectToRoute('comments_edit', array('id' => $comment->getId()));
         }
-
         return $this->render('comments/edit.html.twig', array(
             'comment' => $comment,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
     /**
-     * Deletes a comment entity.
+     * Deletes a Comments entity.
      *
      * @Route("/{id}", name="comments_delete")
      * @Method("DELETE")
@@ -110,20 +96,17 @@ class CommentsController extends Controller
     {
         $form = $this->createDeleteForm($comment);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($comment);
             $em->flush();
         }
-
         return $this->redirectToRoute('comments_index');
     }
-
     /**
-     * Creates a form to delete a comment entity.
+     * Creates a form to delete a Comments entity.
      *
-     * @param Comments $comment The comment entity
+     * @param Comments $comment The Comments entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
